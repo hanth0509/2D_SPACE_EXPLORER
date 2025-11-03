@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [Header("❤️ HEALTH SETTINGS")]
+    [Header(" HEALTH SETTINGS")]
     [Tooltip("Máu tối đa của GameObject")]
     public int maxHealth = 3;
     
     [Tooltip("Máu hiện tại")]
     public int currentHealth;
     
-    [Header("💥 DEATH SETTINGS")]
+    [Header(" DEATH SETTINGS")]
     [Tooltip("Có hủy GameObject khi chết không?")]
     public bool destroyOnDeath = true;
     
     [Tooltip("Thời gian trước khi hủy (giây)")]
     public float deathDelay = 0f;
 
-    // 🎯 SỰ KIỆN - để các script khác lắng nghe
+    // SỰ KIỆN - để các script khác lắng nghe
     public System.Action OnDamageTaken;    // Khi nhận sát thương
     public System.Action OnDeath;          // Khi chết
     public System.Action OnHealthChanged;  // Khi máu thay đổi
@@ -26,72 +26,64 @@ public class Health : MonoBehaviour
         InitializeHealth();
     }
 
-    /// <summary>
     /// Khởi tạo máu khi bắt đầu
-    /// </summary>
     void InitializeHealth()
     {
         currentHealth = maxHealth;
-        Debug.Log($"❤️ {gameObject.name} health initialized: {currentHealth}/{maxHealth}");
+        Debug.Log($" {gameObject.name} health initialized: {currentHealth}/{maxHealth}");
     }
 
-    /// <summary>
     /// Nhận sát thương
-    /// </summary>
     public void TakeDamage(int damageAmount)
     {
-        // 🛡️ KIỂM TRA ĐÃ CHẾT CHƯA
+        // KIỂM TRA ĐÃ CHẾT CHƯA
         if (currentHealth <= 0) return;
 
-        // 💥 TRỪ MÁU
+        //  TRỪ MÁU
         int previousHealth = currentHealth;
         currentHealth -= damageAmount;
         
-        // 🔒 ĐẢM BẢO MÁU KHÔNG ÂM
+        // ĐẢM BẢO MÁU KHÔNG ÂM
         if (currentHealth < 0) currentHealth = 0;
 
-        Debug.Log($"💥 {gameObject.name} took {damageAmount} damage. Health: {currentHealth}/{maxHealth}");
+        Debug.Log($"{gameObject.name} took {damageAmount} damage. Health: {currentHealth}/{maxHealth}");
 
-        // 📢 THÔNG BÁO SỰ KIỆN
+        //  THÔNG BÁO SỰ KIỆN
         OnDamageTaken?.Invoke();
         OnHealthChanged?.Invoke();
 
-        // ☠️ KIỂM TRA CHẾT
+        //  KIỂM TRA CHẾT
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-    /// <summary>
     /// Hồi máu
-    /// </summary>
     public void Heal(int healAmount)
     {
-        // ✨ TĂNG MÁU
+        // TĂNG MÁU
         int previousHealth = currentHealth;
         currentHealth += healAmount;
         
-        // 🔒 GIỚI HẠN MÁU TỐI ĐA
+        // GIỚI HẠN MÁU TỐI ĐA
         if (currentHealth > maxHealth) currentHealth = maxHealth;
 
-        Debug.Log($"✨ {gameObject.name} healed {healAmount}. Health: {currentHealth}/{maxHealth}");
+        Debug.Log($"{gameObject.name} healed {healAmount}. Health: {currentHealth}/{maxHealth}");
 
-        // 📢 THÔNG BÁO SỰ KIỆN
+        // THÔNG BÁO SỰ KIỆN
         OnHealthChanged?.Invoke();
     }
 
-    /// <summary>
     /// Chết
-    /// </summary>
     void Die()
     {
-        Debug.Log($"☠️ {gameObject.name} destroyed!");
+        Debug.Log($"{gameObject.name} destroyed!");
 
-        // 📢 THÔNG BÁO SỰ KIỆN CHẾT
+        //  THÔNG BÁO SỰ KIỆN CHẾT
         OnDeath?.Invoke();
 
-        // 💥 XỬ LÝ HỦY GAMEOBJECT
+        //  XỬ LÝ HỦY GAMEOBJECT
         if (destroyOnDeath)
         {
             if (deathDelay > 0)

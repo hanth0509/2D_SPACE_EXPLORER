@@ -236,8 +236,8 @@ public class PlayerMovement : MonoBehaviour
 
         // MÀU XANH DƯƠNG KHI DI CHUYỂN THẲNG
         // MÀU XANH LÁ KHI DI CHUYỂN NGANG
-        Color boosterColor = Color.Lerp(Color.blue, Color.green, Mathf.Abs(movementInput.x));
-        main.startColor = boosterColor;
+        // Color boosterColor = Color.Lerp(Color.blue, Color.green, Mathf.Abs(movementInput.x));
+        // main.startColor = boosterColor;
     }
 
     /// Cập nhật âm thanh động cơ dựa trên tốc độ
