@@ -64,17 +64,24 @@ public class PlayerShooting : MonoBehaviour
     /// </summary>
     void CreateFirePoint()
     {
-        // TẠO GAMEOBJECT MỚI CHO FIREPOINT
-        GameObject firePointObj = new GameObject("FirePoint");
-        firePointObj.transform.SetParent(transform); // Đặt làm con của Player
+        // // TẠO GAMEOBJECT MỚI CHO FIREPOINT
+        // GameObject firePointObj = new GameObject("FirePoint");
+        // firePointObj.transform.SetParent(transform); // Đặt làm con của Player
 
-        //  VỊ TRÍ: phía trước tàu spaceship
-        firePointObj.transform.localPosition = new Vector3(0, 0.8f, 0);
+        // //  VỊ TRÍ: phía trước tàu spaceship
+        // firePointObj.transform.localPosition = new Vector3(0, 0.8f, 0);
+        // firePointObj.transform.localRotation = Quaternion.identity;
+
+        // firePoint = firePointObj.transform;
+
+        // Debug.Log(" Auto-created FirePoint at: " + firePoint.localPosition);
+        GameObject firePointObj = new GameObject("FirePoint");
+        firePointObj.transform.SetParent(transform);
+        firePointObj.transform.localPosition = new Vector3(1f, 0, 0); // nằm trước mũi (theo trục X)
         firePointObj.transform.localRotation = Quaternion.identity;
 
         firePoint = firePointObj.transform;
-
-        Debug.Log(" Auto-created FirePoint at: " + firePoint.localPosition);
+        Debug.Log("FirePoint created at: " + firePoint.localPosition);
     }
 
     /// Khởi tạo Object Pool cho laser
@@ -169,7 +176,9 @@ public class PlayerShooting : MonoBehaviour
             LaserProjectile laserScript = laser.GetComponent<LaserProjectile>();
             if (laserScript != null)
             {
-                laserScript.Activate(firePoint.position, firePoint.rotation);
+                // laserScript.Activate(firePoint.position, firePoint.rotation);
+                Quaternion adjustedRotation = firePoint.rotation * Quaternion.Euler(0, 0, -90f);
+                laserScript.Activate(firePoint.position, adjustedRotation);
             }
             else
             {

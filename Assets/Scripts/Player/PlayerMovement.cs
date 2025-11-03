@@ -86,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         {
             boosterEmission = boosterParticles.emission;
             boosterEmission.rateOverTime = 0f; // Tắt ban đầu
+            boosterParticles.transform.localRotation = Quaternion.Euler(0, 0, -90f);  // Xoay booster cho phụt sang trái
             Debug.Log("Booster effects initialized");
         }
         else
@@ -166,22 +167,7 @@ public class PlayerMovement : MonoBehaviour
     /// Xử lý xoay spaceship theo hướng di chuyển
     void HandleRotation()
     {
-        // CHỈ XOAY KHI CÓ INPUT ĐÁNG KỂ
-        if (movementInput.magnitude > 0.1f)
-        {
-            // TÍNH GÓC XOAY TỪ VECTOR INPUT
-            // Mathf.Atan2(y, x) trả về góc tính bằng radian
-            // * Mathf.Rad2Deg chuyển sang độ
-            // -90f vì sprite mặc định hướng lên trên
-            float targetAngle = Mathf.Atan2(movementInput.y, movementInput.x) * Mathf.Rad2Deg - 90f;
-
-            // TẠO ROTATION TỪ GÓC
-            Quaternion targetRotation = Quaternion.Euler(0f, 0f, targetAngle);
-
-            // XOAY MƯỢT MÀ TỪ ROTATION HIỆN TẠI ĐẾN ROTATION MỚI
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
-                rotationSpeed * Time.fixedDeltaTime);
-        }
+        
     }
 
     /// Cập nhật trạng thái di chuyển

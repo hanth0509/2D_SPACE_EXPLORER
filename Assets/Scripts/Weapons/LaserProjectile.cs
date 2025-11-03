@@ -37,7 +37,7 @@ public class LaserProjectile : MonoBehaviour
 
         Debug.Log($"Laser hit: {other.gameObject.name}");
 
-        if (other.CompareTag("Enemy") || other.CompareTag("Asteroid"))
+        if (other.CompareTag("Enemy"))
         {
             Health health = other.GetComponent<Health>();
             if (health != null)

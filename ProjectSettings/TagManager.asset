@@ -39,8 +39,29 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: MainBackground
+    uniqueID: 2587008043
+    locked: 0
+  - name: FarBackground
+    uniqueID: 3823698887
+    locked: 0
+  - name: MidBackground
+    uniqueID: 3494587403
+    locked: 0
+  - name: NearBackground
+    uniqueID: 4063522991
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 3772480621
+    locked: 0
+  - name: Projectiles
+    uniqueID: 1078985465
+    locked: 0
+  - name: Effects
+    uniqueID: 1909323583
     locked: 0
   m_RenderingLayers:
   - Default
