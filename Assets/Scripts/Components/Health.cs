@@ -5,14 +5,14 @@ public class Health : MonoBehaviour
     [Header(" HEALTH SETTINGS")]
     [Tooltip("Máu tối đa của GameObject")]
     public int maxHealth = 3;
-    
+
     [Tooltip("Máu hiện tại")]
     public int currentHealth;
-    
+
     [Header(" DEATH SETTINGS")]
     [Tooltip("Có hủy GameObject khi chết không?")]
     public bool destroyOnDeath = true;
-    
+
     [Tooltip("Thời gian trước khi hủy (giây)")]
     public float deathDelay = 0f;
 
@@ -42,7 +42,7 @@ public class Health : MonoBehaviour
         //  TRỪ MÁU
         int previousHealth = currentHealth;
         currentHealth -= damageAmount;
-        
+
         // ĐẢM BẢO MÁU KHÔNG ÂM
         if (currentHealth < 0) currentHealth = 0;
 
@@ -65,7 +65,7 @@ public class Health : MonoBehaviour
         // TĂNG MÁU
         int previousHealth = currentHealth;
         currentHealth += healAmount;
-        
+
         // GIỚI HẠN MÁU TỐI ĐA
         if (currentHealth > maxHealth) currentHealth = maxHealth;
 
@@ -79,7 +79,10 @@ public class Health : MonoBehaviour
     void Die()
     {
         Debug.Log($"{gameObject.name} destroyed!");
-
+        if (CompareTag("Enemy"))
+        {
+            GameManager.Instance.AddScore(50);
+        }
         //  THÔNG BÁO SỰ KIỆN CHẾT
         OnDeath?.Invoke();
 
@@ -113,12 +116,12 @@ public class Health : MonoBehaviour
     // PUBLIC METHODS - CÁC SCRIPT KHÁC CÓ THỂ GỌI
 
     /// Đặt lại máu về tối đa
-   
+
     public void ResetHealth()
     {
         currentHealth = maxHealth;
         OnHealthChanged?.Invoke();
-        Debug.Log($"🔄 {gameObject.name} health reset to {currentHealth}/{maxHealth}");
+        Debug.Log($" {gameObject.name} health reset to {currentHealth}/{maxHealth}");
     }
 
     /// Đặt máu tối đa mới
@@ -127,7 +130,7 @@ public class Health : MonoBehaviour
         maxHealth = newMaxHealth;
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
-        
+
         OnHealthChanged?.Invoke();
     }
 

@@ -11,6 +11,10 @@ public class MapBoundary : MonoBehaviour
     [Header("PLAYER SETTINGS")]
     [Tooltip("Player cần giới hạn di chuyển.")]
     public Transform player;
+    public enum BoundaryMode { Clamp, Loop }
+    [Header("BOUNDARY MODE")]
+    [Tooltip("Clamp = chặn biên | Loop = đi hết rìa sẽ quay lại đầu")]
+    public BoundaryMode boundaryMode = BoundaryMode.Clamp;
 
     [Tooltip("Sử dụng Rigidbody2D để di chuyển vật lý.")]
     public bool usePhysicsMove = true;
@@ -149,4 +153,38 @@ public class MapBoundary : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(backgroundSprite.bounds.center, backgroundSprite.bounds.size);
     }
+    //     // ======== LOOP MODE =========
+    // void LoopPlayerPosition()
+    // {
+    //     Vector3 pos = player.position;
+    //     float width = (rightBound - leftBound);
+    //     float height = (topBound - bottomBound);
+
+    //     // Check nếu vượt qua biên thì dịch sang đầu bên kia
+    //     if (pos.x > rightBound) pos.x = leftBound + margin;
+    //     else if (pos.x < leftBound) pos.x = rightBound - margin;
+
+    //     if (pos.y > topBound) pos.y = bottomBound + margin;
+    //     else if (pos.y < bottomBound) pos.y = topBound - margin;
+
+    //     MovePlayer(pos);
+    // }
+
+    // // ======== HELPER MOVE =========
+    // void MovePlayer(Vector3 targetPos)
+    // {
+    //     if (playerRb != null && usePhysicsMove)
+    //         playerRb.MovePosition(targetPos);
+    //     else
+    //         player.position = targetPos;
+    // }
 }
+
+
+
+
+
+
+
+
+

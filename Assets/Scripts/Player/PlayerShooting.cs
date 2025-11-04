@@ -187,7 +187,7 @@ public class PlayerShooting : MonoBehaviour
                 laser.transform.rotation = firePoint.rotation;
                 laser.SetActive(true);
             }
-            Debug.Log($"🔫 Laser fired! Active lasers: {GetActiveLaserCount()}/{GetTotalLaserCount()}");
+            Debug.Log($" Laser fired! Active lasers: {GetActiveLaserCount()}/{GetTotalLaserCount()}");
             // ÂM THANH BẮN
             PlayShootSound();
 

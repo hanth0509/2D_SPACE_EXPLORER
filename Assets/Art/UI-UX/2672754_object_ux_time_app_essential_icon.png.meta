@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: eed2e7540d2c1734c8208ffd55b70a2c
+guid: 50c9b87148b999b439eeaaa05d11674b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3886915837676421094
-    second: B9_0
+      213: -3777170646912065564
+    second: 2672754_object_ux_time_app_essential_icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: B9_0
+      name: 2672754_object_ux_time_app_essential_icon_0
       rect:
         serializedVersion: 2
-        x: 751
-        y: 246
-        width: 531
-        height: 527
+        x: 0
+        y: 0
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6effa805c5911f530800000000000000
-      internalID: 3886915837676421094
+      spriteID: 4ef16c61f4bc49bc0800000000000000
+      internalID: -3777170646912065564
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      B9_0: 3886915837676421094
+      2672754_object_ux_time_app_essential_icon_0: -3777170646912065564
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

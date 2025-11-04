@@ -106,7 +106,7 @@ public class Asteroid : MonoBehaviour
         {
             int randomIndex = Random.Range(0, asteroidSprites.Length);
             sr.sprite = asteroidSprites[randomIndex];
-            Debug.Log($"Asteroid sprite: {randomIndex + 1}/{asteroidSprites.Length}");
+            // Debug.Log($"Asteroid sprite: {randomIndex + 1}/{asteroidSprites.Length}");
         }
 
         //CHỌN MÀU NGẪU NHIÊN

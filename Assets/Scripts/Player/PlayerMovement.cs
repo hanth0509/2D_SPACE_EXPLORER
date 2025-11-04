@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,6 +13,42 @@ public class PlayerMovement : MonoBehaviour
 
     [Tooltip("Vận tốc tối đa - không vượt quá giá trị này")]
     public float maxVelocity = 10f;
+
+    [Header("PLAYER HEALTH & DAMAGE")]
+    [Tooltip("Máu tối đa của player")]
+    public int maxHealth = 100;
+
+    [Tooltip("Máu hiện tại")]
+    public int currentHealth;
+
+    [Tooltip("Trạng thái bất tử - không nhận damage")]
+    public bool isInvincible = false;
+
+    [Tooltip("Thời gian bất tử sau khi respawn (giây)")]
+    public float invincibilityTime = 3f;
+
+    [Header("DAMAGE EFFECTS")]
+    [Tooltip("Hiệu ứng khi bị damage")]
+    public ParticleSystem damageParticles;
+
+    [Tooltip("Hiệu ứng nổ khi chết")]
+    public GameObject explosionEffect;
+
+    [Tooltip("Màu khi bị damage")]
+    public Color damageColor = Color.red;
+
+    [Tooltip("Audio khi bị damage")]
+    public AudioClip damageSound;
+
+    [Tooltip("Audio khi chết")]
+    public AudioClip deathSound;
+
+    [Header("HEALTH BAR")]
+    // [Tooltip("Prefab health bar hiển thị máu")]
+    // public GameObject healthBarPrefab;
+    [Header("HEALTH UI (Static)")]
+    public UnityEngine.UI.Image staticHealthFill;
+
 
     [Header("COMPONENT REFERENCES")]
     [Tooltip("Tham chiếu đến Rigidbody2D - kéo thả từ Inspector")]
@@ -43,6 +80,11 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Độ thay đổi pitch của động cơ")]
     public float enginePitchRange = 0.5f;
 
+    // PRIVATE COMPONENTS
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private GameObject healthBarInstance;
+    private UnityEngine.UI.Image healthBarFill;
     // Biến theo dõi trạng thái audio
     private bool wasMoving = false;
 
@@ -57,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
         InitializeComponents();
         InitializeBoosterEffects();
         InitializeAudio();
+        InitializeHealthSystem();
     }
 
     /// Khởi tạo các components - chạy một lần khi game bắt đầu
@@ -167,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
     /// Xử lý xoay spaceship theo hướng di chuyển
     void HandleRotation()
     {
-        
+
     }
 
     /// Cập nhật trạng thái di chuyển
@@ -276,5 +319,180 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// Khởi tạo hệ thống máu và damage
+    void InitializeHealthSystem()
+    {
+        // Tìm SpriteRenderer
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+
+        // Khởi tạo máu
+        currentHealth = maxHealth;
+
+        Debug.Log("Health system initialized: " + currentHealth + "/" + maxHealth + " HP");
+    }
+
+    /// Cập nhật health bar position và fill
+    void UpdateHealthBar()
+    {
+        if (staticHealthFill != null)
+        {
+            float healthPercent = (float)currentHealth / maxHealth;
+            staticHealthFill.fillAmount = healthPercent;
+
+            // Đổi màu tùy theo % máu
+            if (healthPercent > 0.6f)
+                staticHealthFill.color = Color.green;
+            else if (healthPercent > 0.3f)
+                staticHealthFill.color = Color.yellow;
+            else
+                staticHealthFill.color = Color.red;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (GameManager.Instance == null || !GameManager.Instance.isGameActive) return;
+
+        // === Va chạm với Enemy / Asteroid ===
+        if (!isInvincible && (other.CompareTag("Enemy")))
+        {
+            // Trừ máu Player
+            GameManager.Instance.PlayerDied();
+            GameManager.Instance.AddScore(-10);
+
+            // Trừ máu đối tượng nếu có Health
+            Health health = other.GetComponent<Health>();
+            if (health != null)
+            {
+                health.TakeDamage(1); // 1 damage, có thể tuỳ chỉnh
+            }
+            else
+            {
+                // Nếu không có Health thì hủy luôn
+                Destroy(other.gameObject);
+            }
+        }
+    }
+
+
+    /// Xử lý va chạm với enemy, asteroid, collectible
+    // void OnTriggerEnter2D(Collider2D other)
+    // {
+    // Kiểm tra game còn active không
+    // if (GameManager.Instance == null || !GameManager.Instance.isGameActive) return;
+
+    // if (other.CompareTag("Enemy") && !isInvincible)
+    // {
+    // int damage = other.CompareTag("EnemyLaser") ? 25 : 34;
+    // TakeDamage(damage);
+    // Hủy laser nếu là enemy laser
+    // if (other.CompareTag("EnemyLaser"))
+    //     Destroy(other.gameObject);
+    // }
+    // else if (other.CompareTag("Collectible"))
+    // {
+    //     CollectItem(other.gameObject);
+    // }
+    // }
+
+    /// Nhận damage
+    // void TakeDamage(int damage)
+    // {
+    //     if (isInvincible) return;
+
+    //     currentHealth -= damage;
+    //     UpdateHealthBar();
+
+    //     // Âm thanh + particle
+    //     if (engineAudioSource != null && damageSound != null)
+    //         engineAudioSource.PlayOneShot(damageSound);
+    //     if (damageParticles != null)
+    //         damageParticles.Play();
+
+    //     // Hiệu ứng flash
+    //     // StartCoroutine(DamageFlash());
+
+    //     Debug.Log($"Player took {damage} damage! Health: {currentHealth}/{maxHealth}");
+
+    //     // Nếu máu hết
+    //     if (currentHealth <= 0)
+    //     {
+    //         // Phát hiệu ứng nổ (tuỳ chọn)
+    //         if (explosionEffect != null)
+    //         {
+    //             GameObject explosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+    //             Destroy(explosion, 2f);
+    //         }
+
+    //         // Báo cho GameManager xử lý chết + respawn
+    //         if (GameManager.Instance != null)
+    //             GameManager.Instance.PlayerDied();
+    //     }
+    // }
+
+    /// Hiệu ứng bất tử sau khi respawn
+    // IEnumerator InvincibilityEffect()
+    // {
+    //     isInvincible = true;
+
+    //     if (spriteRenderer != null)
+    //     {
+    //         float elapsedTime = 0f;
+
+    //         while (elapsedTime < invincibilityTime)
+    //         {
+    //             // Nhấp nháy trong suốt
+    //             Color semiTransparent = originalColor;
+    //             semiTransparent.a = 0.3f;
+    //             spriteRenderer.color = semiTransparent;
+    //             yield return new WaitForSeconds(0.15f);
+
+    //             spriteRenderer.color = originalColor;
+    //             yield return new WaitForSeconds(0.15f);
+
+    //             elapsedTime += 0.3f;
+    //         }
+
+    //         // Đảm bảo trở lại màu gốc
+    //         spriteRenderer.color = originalColor;
+    //     }
+
+    //     isInvincible = false;
+    //     Debug.Log("Invincibility ended");
+    // }
+    /// Thu thập vật phẩm
+    // void CollectItem(GameObject item)
+    // {
+    //     if (item.CompareTag("Collectible"))
+    //     {
+    //         // Kiểm tra GameManager tồn tại
+    //         if (GameManager.Instance != null && GameManager.Instance.isGameActive)
+    //         {
+    //             // Thêm điểm
+    //             GameManager.Instance.AddScore(100);
+    //             Debug.Log("Collected item! +100 points");
+    //         }
+    //         else
+    //         {
+    //             Debug.Log("Collected item, but GameManager not ready");
+    //         }
+
+    //         // Hủy vật phẩm
+    //         Destroy(item);
+
+    //         // Có thể thêm hiệu ứng ở đây
+    //         // if (collectEffect != null) Instantiate(collectEffect, transform.position, Quaternion.identity);
+    //     }
+    // }
+    void Update()
+    {
+        // Cập nhật health bar position theo player
+        UpdateHealthBar();
     }
 }

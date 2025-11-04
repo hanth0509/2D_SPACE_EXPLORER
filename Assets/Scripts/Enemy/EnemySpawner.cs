@@ -80,6 +80,12 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        if (player == null)
+        {
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null) player = playerObj.transform;
+        }
+        Debug.Log("Spawner active");
         HandleSpawning();
         CleanupDestroyedAsteroids();
     }
@@ -119,6 +125,7 @@ public class EnemySpawner : MonoBehaviour
     /// Spawn một asteroid mới
     void SpawnAsteroid()
     {
+        Debug.Log("SpawnAsteroid() called");
         // LẤY ASTEROID TỪ POOL
         GameObject asteroid = GetPooledAsteroid();
         if (asteroid == null) return;
@@ -138,7 +145,7 @@ public class EnemySpawner : MonoBehaviour
         // THÊM VÀO DANH SÁCH ACTIVE
         activeAsteroids.Add(asteroid);
 
-        // Debug.Log($"Spawned asteroid at {spawnPosition}. Active: {activeAsteroids.Count}/{maxAsteroids}");
+        Debug.Log($"Spawned asteroid at {spawnPosition}. Active: {activeAsteroids.Count}/{maxAsteroids}");
     }
 
     /// Lấy asteroid từ pool

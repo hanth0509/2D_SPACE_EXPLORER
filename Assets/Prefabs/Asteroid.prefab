@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9969307abfc701c4e8148d9528b6326d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 3
   currentHealth: 0
   destroyOnDeath: 1
   deathDelay: 0
@@ -203,7 +203,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -331,9 +331,9 @@ MonoBehaviour:
   behavior: 0
   detectionRange: 15
   attackRange: 15
-  avoidDistance: 0
+  avoidDistance: 3
   moveSpeed: 3
-  chaseSpeed: 6
+  chaseSpeed: 4
   maxForce: 10
   directionChangeInterval: 4
   playerTarget: {fileID: 0}
